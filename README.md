@@ -50,4 +50,4 @@ We add a new library called `kchat.kafka`. This contains the producer/consumer l
 Run two instances of the blazor web project on ports 5001/5002 so we can simulate multiple clients connecting to kafka.
 
 1. Run `docker-compose up -d` in the `\kchat` folder and wait for it to complete.
-1. Open a browser and browse to http://localhost:5001/ and http://localhost:5002 for the two clients
+1. Open a browser and navigate to http://localhost:5001/ and http://localhost:5002 for the two clients
