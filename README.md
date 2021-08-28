@@ -9,6 +9,7 @@ This is a tutorial to be used in hands-on-workshop. Each branch only contains pa
 [Main](https://github.com/TalalTayyab/Kchat/tree/main)|Readme file that describes how to get a free Kafka instance
 [First](https://github.com/TalalTayyab/Kchat/tree/first)|Layout of the Blazor app
 [Second](https://github.com/TalalTayyab/Kchat/tree/second)|Add Kafka code
+[Third](https://github.com/TalalTayyab/Kchat/tree/second)|Add web project into docker compose to simulate multiple client instances
 
 ## How to install Kafka
 
@@ -43,3 +44,7 @@ We are using a `Blazor Server` hosting model. For more information read about it
 ## Kafka library
 
 We add a new library called `kchat.kafka`. This contains the producer/consumer logic to connect to a Kafka instance.
+
+## Multiple clients in Docker compose
+
+Run two instances of the blazor web project on ports 5001/5002 so we can simulate multiple clients connecting to the service bus.
