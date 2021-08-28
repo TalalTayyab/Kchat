@@ -1,4 +1,3 @@
-using kchat.UI.Framework;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +21,6 @@ namespace kchat.UI
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<MemoryStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

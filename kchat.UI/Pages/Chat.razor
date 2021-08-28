@@ -1,11 +1,6 @@
 ﻿@page "/"
 
-@using kchat.UI.Framework
-@inject MemoryStore _memoryStore;
-
-
-
-@if (_showUserId)
+@if (_loginRequired)
 {
     <div class="container-sm">
         <div class="card" style="width: 18rem;">
@@ -20,7 +15,7 @@
 }
 
 
-@if (!_showUserId)
+@if (!_loginRequired)
 {
     <div class="container-fluid">
         <div class="row">
@@ -48,8 +43,11 @@
             <div class="col-11">
                 <input type="text" style="width:100%" @bind-value="_txtMessage" />
             </div>
-            <div class="col-1 ">
-                <button class="btn-primary float-right" @onclick="SendMessage">Send</button>
+        </div>
+
+        <div class="row">
+            <div class="col-2">
+                <button class="btn-primary" @onclick="SendMessage">Send</button>
             </div>
         </div>
     </div>
@@ -60,7 +58,7 @@
     private string _txtUserId;
     private string _txtMessage;
     private string _txtareaMessages;
-    private bool _showUserId = false;
+    private bool _loginRequired = false;
 
 
     private void SendMessage()
@@ -70,24 +68,20 @@
             return;
         }
 
-        _txtareaMessages += Environment.NewLine + _txtMessage;
+        _txtareaMessages += _txtMessage + Environment.NewLine;
         _txtMessage = string.Empty;
 
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
-        _txtUserId = _memoryStore.Get("UserId");
-        if (string.IsNullOrEmpty(_memoryStore.Get("UserId")))
-        {
-            _showUserId = true;
-        }
+        _loginRequired = true;
+        return Task.CompletedTask;
     }
 
     private void SubmitUserId()
     {
-        _memoryStore.Add("UserId", _txtUserId);
-        _showUserId = false;
+        _loginRequired = false;
     }
 
 }
