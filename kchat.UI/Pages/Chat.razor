@@ -4,76 +4,104 @@
 @using kchat.kafka;
 @inject IJSRuntime jsRuntime
 @inject MessageService _messageService;
+@inject LoggingService _loggingService;
 @implements IDisposable
 
-@if (_loginRequired)
-{
-    <div class="container-sm" >
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Enter your name:</h5>
-                <input type="text" class="form-text" id="inputUserId" @bind-value="_txtUserId" @onkeyup="@OnEnterKeyUserName" />
-                <p class="card-text">Before you can continue, you must enter your username</p>
-                <button class="btn-primary" @onclick="SubmitUserId">Submit</button>
-            </div>
+
+
+
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-8">
+            @if (_loginRequired)
+            {
+                <div class="container-sm">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Enter your name:</h5>
+                            <input type="text" class="form-text" id="inputUserId" @bind-value="_txtUserId" @onkeyup="@OnEnterKeyUserName" />
+                            <p class="card-text">Before you can continue, you must enter your username</p>
+                            <button class="btn-primary" @onclick="SubmitUserId">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (!_loginRequired)
+            {
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-secondary" role="alert">
+                            Welcome back <b>@_txtUserId</b>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <textarea style="width:100%;height:60vh;overflow:scroll; " @bind="_txtareaMessages" readonly></textarea>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        Message:
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <input id="inputTextMessage" type="text" style="width:100%" @bind-value="_txtMessage" @onkeyup="@OnEnterKeyTextMessage" disabled="@_sendingMessage" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-2" style="padding-top:5px">
+                        @if (!_sendingMessage)
+                        {
+                            <button class="btn btn-primary" @onclick="SendMessage">Send</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-primary" type="button" disabled>
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                <span class="visually-hidden">Sending...</span>
+                            </button>
+                        }
+                    </div>
+                </div>
+            }
         </div>
-    </div>
-}
 
+        <div class="col-4">
 
-@if (!_loginRequired)
-{
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="alert alert-secondary" role="alert">
-                    Welcome back <b>@_txtUserId</b>
+            <div class="row">
+                <div class="col-12">
+                    <b>Logs:</b>
                 </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-12">
-                <textarea style="width:100%;height:70vh;overflow:scroll; " @bind="_txtareaMessages" readonly></textarea>
-            </div>
+            <div class="row">
+                <div class="col-12">
+                    <textarea style="width:100%;height:80vh;overflow:scroll; " @bind="_txtAreaLogMessages" readonly></textarea>
+                </div>
 
-        </div>
-
-        <div class="row">
-            <div class="col-12">
-                Message:
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12">
-                <input id="inputTextMessage" type="text" style="width:100%" @bind-value="_txtMessage" @onkeyup="@OnEnterKeyTextMessage" disabled="@_sendingMessage" />
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-2">
-                @if (!_sendingMessage)
-                {
-                    <button class="btn btn-primary" @onclick="SendMessage">Send</button>
-                }
-                else
-                {
-                    <button class="btn btn-primary" type="button" disabled>
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        <span class="visually-hidden">Sending...</span>
-                    </button>
-                }
             </div>
         </div>
     </div>
-}
+
+</div>
+
 
 @code {
 
     private string _txtUserId;
     private string _txtMessage;
     private string _txtareaMessages;
+    private string _txtAreaLogMessages;
     private bool _loginRequired = false;
     private bool _sendingMessage = false;
 
@@ -88,13 +116,17 @@
         else
         {
             await jsRuntime.InvokeVoidAsync("focusInput", "inputTextMessage");
-        }        await base.OnAfterRenderAsync(firstRender);
+        }
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     protected override Task OnInitializedAsync()
     {
-        _messageService.Initialize();
         _messageService.OnNewMessage += OnNewMessage;
+        _loggingService.OnNewLog += OnNewLog;
+        
+        _messageService.Initialize();
+        
         _loginRequired = true;
         return Task.CompletedTask;
     }
@@ -110,6 +142,15 @@
         await _messageService.SendMessage(_txtUserId, _txtMessage);
         _txtMessage = string.Empty;
         _sendingMessage = false;
+    }
+
+    private void OnNewLog(object sender, string logMessage)
+    {
+        InvokeAsync(() =>
+        {
+            _txtAreaLogMessages += logMessage + Environment.NewLine;
+            this.StateHasChanged();
+        });
     }
 
     private void OnNewMessage(object sender, ChatMessage chatMessage)

@@ -23,8 +23,9 @@ namespace kchat.UI
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            
+
             // additional code
+            services.AddSingleton<LoggingService>();
             services.AddSingleton<MessageService>();
             services.AddTransient<KafkaProducer>();
             services.AddTransient<KafkaConsumer>();
