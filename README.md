@@ -47,4 +47,4 @@ We add a new library called `kchat.kafka`. This contains the producer/consumer l
 
 ## Multiple clients in Docker compose
 
-Run two instances of the blazor web project on ports 5001/5002 so we can simulate multiple clients connecting to the service bus.
+Run two instances of the blazor web project on ports 5001/5002 so we can simulate multiple clients connecting to kafka.
