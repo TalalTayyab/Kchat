@@ -35,7 +35,7 @@ namespace kchat.UI.Framework
             _consumeTask.Dispose();
         }
 
-        public void Initialize(string userId)
+        public void Initialize()
         {
             _ctSource = new CancellationTokenSource();
             
@@ -45,7 +45,7 @@ namespace kchat.UI.Framework
             }
 
             _kafkaProducer.Initialize(_kafkaOptions.BootstrapServers, _kafkaOptions.Username, _kafkaOptions.Password, _kafkaOptions.Topic);
-            _kafkaConsumer.Initialize(_kafkaOptions.BootstrapServers, _kafkaOptions.Username, _kafkaOptions.Password, userId, _kafkaOptions.Topic);
+            _kafkaConsumer.Initialize(_kafkaOptions.BootstrapServers, _kafkaOptions.Username, _kafkaOptions.Password, _kafkaOptions.Topic, _kafkaOptions.GroupId);
 
             _consumeTask = Task.Run(Consume);
 

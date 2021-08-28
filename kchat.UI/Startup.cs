@@ -25,7 +25,6 @@ namespace kchat.UI
             services.AddServerSideBlazor();
             
             // additional code
-            services.AddSingleton<MemoryStore>();
             services.AddSingleton<MessageService>();
             services.AddTransient<KafkaProducer>();
             services.AddTransient<KafkaConsumer>();

@@ -3,13 +3,12 @@
 @using kchat.UI.Framework
 @using kchat.kafka;
 @inject IJSRuntime jsRuntime
-@inject MemoryStore _memoryStore;
 @inject MessageService _messageService;
 @implements IDisposable
 
-@if (_showUserId)
+@if (_loginRequired)
 {
-    <div class="container-sm">
+    <div class="container-sm" >
         <div class="card" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title">Enter your name:</h5>
@@ -22,7 +21,7 @@
 }
 
 
-@if (!_showUserId)
+@if (!_loginRequired)
 {
     <div class="container-fluid">
         <div class="row">
@@ -75,41 +74,28 @@
     private string _txtUserId;
     private string _txtMessage;
     private string _txtareaMessages;
-    private bool _showUserId = false;
+    private bool _loginRequired = false;
     private bool _sendingMessage = false;
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         // focus on the text element
-        if (_showUserId)
+        if (_loginRequired)
         {
             await jsRuntime.InvokeVoidAsync("focusInput", "inputUserId");
         }
         else
         {
             await jsRuntime.InvokeVoidAsync("focusInput", "inputTextMessage");
-        }
-        await base.OnAfterRenderAsync(firstRender);
+        }        await base.OnAfterRenderAsync(firstRender);
     }
 
     protected override Task OnInitializedAsync()
     {
+        _messageService.Initialize();
         _messageService.OnNewMessage += OnNewMessage;
-        _txtUserId = _memoryStore.Get("UserId");
-
-        // If user has not signed up - first they should sign up.
-        if (string.IsNullOrEmpty(_memoryStore.Get("UserId")))
-        {
-
-            _showUserId = true;
-
-        }
-        else
-        {
-            _messageService.Initialize(_txtUserId);
-        }
-
+        _loginRequired = true;
         return Task.CompletedTask;
     }
 
@@ -146,9 +132,7 @@
             return;
         }
 
-        _memoryStore.Add("UserId", _txtUserId);
-        _showUserId = false;
-        _messageService.Initialize(_txtUserId);
+        _loginRequired = false;
     }
 
     public void Dispose()
