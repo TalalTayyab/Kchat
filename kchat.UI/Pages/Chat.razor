@@ -1,36 +1,33 @@
-﻿@page "/chat"
+﻿@page "/"
 
 @using kchat.UI.Framework
 @inject MemoryStore _memoryStore;
 
-<h3>Chat</h3>
+
 
 @if (_showUserId)
 {
     <div class="container-sm">
-
-    </div>
-
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">Enter your name:</h5>
-            <input type="text" class="form-text" id="inputUserId" @bind-value="_txtUserId" />
-            <button class="btn-primary" @onclick="SubmitUserId">Submit</button>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Enter your name:</h5>
+                <input type="text" class="form-text" id="inputUserId" @bind-value="_txtUserId" />
+                <p class="card-text">Before you can continue, you must enter your username</p>
+                <button class="btn-primary" @onclick="SubmitUserId">Submit</button>
+            </div>
         </div>
     </div>
 }
 
 
-
 @if (!_showUserId)
 {
-
-
     <div class="container-fluid">
-
         <div class="row">
             <div class="col-12">
-                <b>Welcome back @_txtUserId</b>
+                <div class="alert alert-secondary" role="alert">
+                    Welcome back <b>@_txtUserId</b>
+                </div>
             </div>
         </div>
 

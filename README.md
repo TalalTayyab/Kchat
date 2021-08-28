@@ -31,3 +31,11 @@ Note: Requires Docker with support for linux containers.
 1. Scroll all the way down until you see Developer Duck Free account
 1. Follow through the process to get a free instance of Kafka.
 
+## Blazor App
+
+Why use Blazor ?  because it is very easy to create a streaming application using Signal-R
+We are using a `Blazor Server` hosting model. For more information read about it at [ASP.NET Core Blazor hosting models](https://docs.microsoft.com/en-us/aspnet/core/blazor/hosting-models?view=aspnetcore-5.0).
+
+1. Open the `kchat.sln` solution in visual studio. This will open the kchat.UI project that contains the blazor app.
+1. To run - open a command prompt and browse to `\kchat.UI\` folder, and run `dotnet watch run`
+1. This will launch the application and also refresh the app if you make any changes - pretty cool
