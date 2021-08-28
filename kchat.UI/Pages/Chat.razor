@@ -17,40 +17,53 @@
 
 @if (!_loginRequired)
 {
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="alert alert-secondary" role="alert">
-                    Welcome back <b>@_txtUserId</b>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12">
-                <textarea style="width:100%;height:70vh;overflow:scroll; " @bind="_txtareaMessages" readonly></textarea>
-            </div>
-
-        </div>
-
-        <div class="row">
-            <div class="col-12">
-                Message:
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-11">
-                <input type="text" style="width:100%" @bind-value="_txtMessage" />
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-2">
-                <button class="btn-primary" @onclick="SendMessage">Send</button>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-secondary" role="alert">
+                Welcome back <b>@_txtUserId</b>
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-12">
+            <textarea style="width:100%;height:40vh;overflow:scroll; " @bind="_txtareaMessages" readonly></textarea>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <b>Messages:</b>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <input type="text" style="width:100%" @bind-value="_txtMessage" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-2">
+            <button class="btn-primary" @onclick="SendMessage">Send</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <b>Logs:</b>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <textarea style="width:100%;height:20vh;overflow:scroll; " @bind="_logAreaMessages" readonly></textarea>
+        </div>
+
+    </div>
+</div>
 }
 
 @code {
@@ -58,6 +71,7 @@
     private string _txtUserId;
     private string _txtMessage;
     private string _txtareaMessages;
+    private string _logAreaMessages;
     private bool _loginRequired = false;
 
 
