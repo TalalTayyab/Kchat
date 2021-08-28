@@ -6,9 +6,9 @@ This is a tutorial to be used in hands-on-workshop. Each branch only contains pa
 
 |Branch|Description|
 |-|-|
-First|Readme file that describes how to get a free Kafka instance
-Second|Layout of the Blazor app
-Third|Add Kafka code
+[Main](https://github.com/TalalTayyab/Kchat/tree/first)|Readme file that describes how to get a free Kafka instance
+[First](https://github.com/TalalTayyab/Kchat/tree/first)|Layout of the Blazor app
+[Second](https://github.com/TalalTayyab/Kchat/tree/second)|Add Kafka code
 
 ## How to install Kafka
 
