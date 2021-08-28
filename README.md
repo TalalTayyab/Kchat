@@ -1,6 +1,8 @@
 # Kchat
 
-A chat application using Kafka. 
+A chat application using Kafka.
+
+![Alt text](kchat.png?raw=true "kchat")
 
 This is a tutorial to be used in hands-on-workshop. Each branch only contains part of the code.
 
