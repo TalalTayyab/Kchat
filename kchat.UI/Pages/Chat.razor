@@ -1,0 +1,96 @@
+﻿@page "/chat"
+
+@using kchat.UI.Framework
+@inject MemoryStore _memoryStore;
+
+<h3>Chat</h3>
+
+@if (_showUserId)
+{
+    <div class="container-sm">
+
+    </div>
+
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Enter your name:</h5>
+            <input type="text" class="form-text" id="inputUserId" @bind-value="_txtUserId" />
+            <button class="btn-primary" @onclick="SubmitUserId">Submit</button>
+        </div>
+    </div>
+}
+
+
+
+@if (!_showUserId)
+{
+
+
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-12">
+                <b>Welcome back @_txtUserId</b>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <textarea style="width:100%;height:70vh;overflow:scroll; " @bind="_txtareaMessages" readonly></textarea>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                Message:
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-11">
+                <input type="text" style="width:100%" @bind-value="_txtMessage" />
+            </div>
+            <div class="col-1 ">
+                <button class="btn-primary float-right" @onclick="SendMessage">Send</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    private string _txtUserId;
+    private string _txtMessage;
+    private string _txtareaMessages;
+    private bool _showUserId = false;
+
+
+    private void SendMessage()
+    {
+        if (string.IsNullOrEmpty(_txtMessage))
+        {
+            return;
+        }
+
+        _txtareaMessages += Environment.NewLine + _txtMessage;
+        _txtMessage = string.Empty;
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _txtUserId = _memoryStore.Get("UserId");
+        if (string.IsNullOrEmpty(_memoryStore.Get("UserId")))
+        {
+            _showUserId = true;
+        }
+    }
+
+    private void SubmitUserId()
+    {
+        _memoryStore.Add("UserId", _txtUserId);
+        _showUserId = false;
+    }
+
+}
