@@ -11,7 +11,7 @@ This is a tutorial to be used in hands-on-workshop. Each branch only contains pa
 [Main](https://github.com/TalalTayyab/Kchat/tree/main)|Readme file that describes how to get a free Kafka instance
 [First](https://github.com/TalalTayyab/Kchat/tree/first)|Layout of the Blazor app
 [Second](https://github.com/TalalTayyab/Kchat/tree/second)|Add Kafka code
-[Third](https://github.com/TalalTayyab/Kchat/tree/second)|Add web project into docker compose to simulate multiple client instances
+[Third](https://github.com/TalalTayyab/Kchat/tree/third)|Add web project into docker compose to simulate multiple client instances
 
 ## How to install Kafka
 
