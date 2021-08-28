@@ -9,7 +9,7 @@ namespace kchat.kafka
     {
         private IConsumer<string, string> _consumer;
 
-        public void Initialize(string bootstrapServer, string username, string password, string groupId, string topic)
+        public void Initialize(string bootstrapServer, string username, string password, string topic, string groupId)
         {
             var config = new ConsumerConfig
             {
