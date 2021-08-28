@@ -1,6 +1,8 @@
 # Kchat
 
-A chat application using Kafka. 
+A chat application using Kafka.
+
+![Alt text](kchat.png?raw=true "kchat")
 
 This is a tutorial to be used in hands-on-workshop. Each branch only contains part of the code.
 
@@ -10,7 +12,6 @@ This is a tutorial to be used in hands-on-workshop. Each branch only contains pa
 [First](https://github.com/TalalTayyab/Kchat/tree/first)|Layout of the Blazor app
 [Second](https://github.com/TalalTayyab/Kchat/tree/second)|Add Kafka code
 [Third](https://github.com/TalalTayyab/Kchat/tree/third)|Add web project into docker compose to simulate multiple client instances
-
 
 ## How to install Kafka
 
