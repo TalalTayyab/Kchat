@@ -1,3 +1,4 @@
+using kchat.kafka;
 using kchat.UI.Framework;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,7 +23,13 @@ namespace kchat.UI
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            
+            // additional code
             services.AddSingleton<MemoryStore>();
+            services.AddSingleton<MessageService>();
+            services.AddTransient<KafkaProducer>();
+            services.AddTransient<KafkaConsumer>();
+            services.Configure<KafkaOptions>(Configuration.GetSection(nameof(KafkaOptions)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

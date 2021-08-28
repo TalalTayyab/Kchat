@@ -39,3 +39,7 @@ We are using a `Blazor Server` hosting model. For more information read about it
 1. Open the `kchat.sln` solution in visual studio. This will open the kchat.UI project that contains the blazor app.
 1. To run - open a command prompt and browse to `\kchat.UI\` folder, and run `dotnet watch run`
 1. This will launch the application and also refresh the app if you make any changes - pretty cool
+
+## Kafka library
+
+We add a new library called `kchat.kafka`. This contains the producer/consumer logic to connect to a Kafka instance.
