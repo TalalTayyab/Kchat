@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "kchat.dbUp.migrations": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
