@@ -44,4 +44,22 @@ services:
     depends_on: 
       - zookeeper
       - kafka
+      - db
+
+  db:
+    image: "mcr.microsoft.com/mssql/server"
+    ports:
+      - 5003:1433
+    environment: 
+      SA_PASSWORD: "P@assW@rd"
+      ACCEPT_EULA: "Y"
   
+  db-migrations:
+    build: 
+      context: ./kchat.dbUp.migrations/
+      dockerfile: Dockerfile
+    depends_on: 
+      - db
+    environment: 
+      DB_CONNECTION: "Server=db;Database=kchat;User Id=sa;Password=P@assW@rd;"
+    restart: on-failure
