@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\kchat.db\kchat.db.csproj" />
     <ProjectReference Include="..\kchat.kafka\kchat.kafka.csproj" />
   </ItemGroup>
 

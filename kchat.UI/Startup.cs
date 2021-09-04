@@ -1,3 +1,4 @@
+using kchat.db;
 using kchat.kafka;
 using kchat.UI.Framework;
 using Microsoft.AspNetCore.Builder;
@@ -27,8 +28,11 @@ namespace kchat.UI
             // additional code
             services.AddSingleton<LoggingService>();
             services.AddSingleton<MessageService>();
+            services.AddSingleton<ChatMessageRepository>();
+            services.AddSingleton<LokiService>();
             services.AddTransient<KafkaProducer>();
             services.AddTransient<KafkaConsumer>();
+            services.AddTransient(c => new DatabaseService(c.GetRequiredService<IConfiguration>().GetConnectionString("db")));
             services.Configure<KafkaOptions>(Configuration.GetSection(nameof(KafkaOptions)));
         }
 

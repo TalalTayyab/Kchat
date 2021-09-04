@@ -15,8 +15,12 @@ namespace kchat.kafka
             {
                 BootstrapServers = bootstrapServer,
                 GroupId = groupId,
-                EnableAutoCommit = true,
-                AutoOffsetReset = AutoOffsetReset.Latest
+                SessionTimeoutMs = 10000, //keeping it small so its easier to debug
+                HeartbeatIntervalMs = 1000, //keeping it small so its easier to debug
+                MaxPollIntervalMs = 20000,//keeping it small so its easier to debug
+                EnableAutoCommit = false, // dont auto commit
+                EnableAutoOffsetStore = false, // dont store offset
+                AutoOffsetReset = AutoOffsetReset.Earliest // re-read all the messages from the beginning for this consumer group
             };
 
             if (!string.IsNullOrEmpty(username))
@@ -29,16 +33,34 @@ namespace kchat.kafka
 
 
             _consumer = new ConsumerBuilder<string, string>(config).Build();
-
             _consumer.Subscribe(topic);
         }
 
         public ChatMessage Consume(CancellationToken ct)
         {
-            var cr =  _consumer.Consume(ct);
-            var cm = JsonSerializer.Deserialize<ChatMessage>(cr.Message.Value);
-            cm.UserId = cm.UserId ?? cr.Message.Key;
+            var result = _consumer.Consume(ct);
+
+            if (result == null || result.IsPartitionEOF)
+            {
+                return null;
+            }
+
+            var cm = JsonSerializer.Deserialize<ChatMessage>(result.Message.Value);
+
+            cm.Topic = result.Topic;
+            cm.Partiton = result.Partition.Value;
+            cm.Offset = result.Offset.Value;
+
             return cm;
+        }
+
+        public void Commit(string topic, int partition, long offSet)
+        {
+            var tp = new TopicPartition(topic, partition);
+            var os = new Offset(offSet + 1); // https://github.com/confluentinc/confluent-kafka-dotnet/issues/1300
+            var tpo = new TopicPartitionOffset(tp, os);
+
+            _consumer.Commit(new[] { tpo });
         }
 
         public void Close()

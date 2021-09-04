@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kchat.UI", "kchat.UI\kchat.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kchat.kafka", "kchat.kafka\kchat.kafka.csproj", "{EE9289DB-E5FF-4C37-9F01-AF0680CC7986}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kchat.dbUp.migrations", "kchat.dbUp.migrations\kchat.dbUp.migrations.csproj", "{E5FDBDCA-F066-40A9-9FFC-D0AC20FC27C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kchat.dbUp.migrations", "kchat.dbUp.migrations\kchat.dbUp.migrations.csproj", "{E5FDBDCA-F066-40A9-9FFC-D0AC20FC27C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kchat.db", "kchat.db\kchat.db.csproj", "{FD857931-9C06-43E9-BED9-0DECCAC6E9D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{E5FDBDCA-F066-40A9-9FFC-D0AC20FC27C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5FDBDCA-F066-40A9-9FFC-D0AC20FC27C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5FDBDCA-F066-40A9-9FFC-D0AC20FC27C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD857931-9C06-43E9-BED9-0DECCAC6E9D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD857931-9C06-43E9-BED9-0DECCAC6E9D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD857931-9C06-43E9-BED9-0DECCAC6E9D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD857931-9C06-43E9-BED9-0DECCAC6E9D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

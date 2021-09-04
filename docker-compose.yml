@@ -30,6 +30,7 @@ services:
     environment: 
       - KafkaOptions__BootstrapServers=kafka:9092
       - KafkaOptions__GroupId=web1
+      - ConnectionStrings__db=Server=db;Database=kchat;User Id=sa;Password=P@assW@rd;
     depends_on: 
       - zookeeper
       - kafka
@@ -41,6 +42,7 @@ services:
     environment: 
       - KafkaOptions__BootstrapServers=kafka:9092
       - KafkaOptions__GroupId=web2
+      - ConnectionStrings__db=Server=db;Database=kchat;User Id=sa;Password=P@assW@rd;
     depends_on: 
       - zookeeper
       - kafka
