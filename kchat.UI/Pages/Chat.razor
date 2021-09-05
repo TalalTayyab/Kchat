@@ -105,7 +105,6 @@
     private bool _loginRequired = false;
     private bool _sendingMessage = false;
 
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         // focus on the text element
@@ -124,10 +123,11 @@
     {
         _messageService.OnNewMessage += OnNewMessage;
         _loggingService.OnNewLog += OnNewLog;
-        
+
         _messageService.Initialize();
-        
+
         _loginRequired = true;
+
         return Task.CompletedTask;
     }
 
@@ -156,9 +156,13 @@
     private void OnNewMessage(object sender, ChatMessage chatMessage)
     {
         // Take care to update UI on the right sycnhronization context
-        InvokeAsync(() =>
+        InvokeAsync(async () =>
         {
-            var message = $"{chatMessage.DateTime.ToString("HH:mm:ss")} {chatMessage.UserId}: {chatMessage.Text}";
+            int offsetInMinutes = await jsRuntime.InvokeAsync<int>("blazorGetTimezoneOffset");
+            TimeSpan userOffset = TimeSpan.FromMinutes(-offsetInMinutes);
+
+            var dt = chatMessage.DateTime.ToOffset(userOffset);
+            var message = $"{dt.ToString("HH:mm:ss")} {chatMessage.UserId}: {chatMessage.Text}";
             _txtareaMessages += message + Environment.NewLine;
             this.StateHasChanged();
         });

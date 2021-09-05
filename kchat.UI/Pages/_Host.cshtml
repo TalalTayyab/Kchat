@@ -19,6 +19,10 @@
         function focusInput(id) {
             document.getElementById(id).focus();
         }
+
+        function blazorGetTimezoneOffset() {
+            return new Date().getTimezoneOffset();
+        }
     </script>
 </head>
 <body>

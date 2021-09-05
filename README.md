@@ -33,6 +33,9 @@ Note: Requires Docker with support for linux containers.
 1. Browse to [CloudKafka](https://www.cloudkarafka.com/plans.html)
 1. Scroll all the way down until you see Developer Duck Free account
 1. Follow through the process to get a free instance of Kafka.
+1. Create a topic called messages - make sure to set the partitions to 1.
+
+To run the clients in docker using the Cloud Kafka instance- update the `docker-compose.cloud.yml` file with cloud settings and run `docker-compose -f .\docker-compose.yml -f .\docker-compose.cloud.yml up -d --build` in the `\kchat` folder and wait for it to complete.
 
 ## Blazor App
 
@@ -52,4 +55,6 @@ We add a new library called `kchat.kafka`. This contains the producer/consumer l
 Run two instances of the blazor web project on ports 5001/5002 so we can simulate multiple clients connecting to kafka.
 
 1. Run `docker-compose up -d` in the `\kchat` folder and wait for it to complete.
+1. Alternatively to use the CloudKafka instance run `docker-compose -f .\docker-compose.yml -f .\docker-compose.cloud.yml up -d --build`.
 1. Open a browser and navigate to http://localhost:5001/ and http://localhost:5002 for the two clients
+
