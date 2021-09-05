@@ -11,5 +11,10 @@ namespace kchat.kafka
         public string Topic { get; set; }
         public int Partiton { get; set; }
         public long Offset { get; set; }
+
+        public override string ToString()
+        {
+            return $"[{Topic}]{{{Partiton}:{Offset}}}";
+        }
     }
 }

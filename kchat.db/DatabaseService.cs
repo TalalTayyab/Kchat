@@ -19,5 +19,11 @@ namespace kchat.db
             using var connection = new SqlConnection(connectionstring);
             return await connection.ExecuteAsync(sql, param);
         }
+
+        public async Task<T> GetTAsync<T>(string sql, object param)
+        {
+            using var connection = new SqlConnection(connectionstring);
+            return await connection.QueryFirstOrDefaultAsync<T>(sql, param);
+        }
     }
 }

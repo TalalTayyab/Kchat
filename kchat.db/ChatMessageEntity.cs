@@ -13,6 +13,11 @@ namespace kchat.db
         public long TopicPartitionOffSet { get; set; }
         public string GroupId { get; set; }
 
+        public ChatMessageEntity()
+        {
+
+        }
+
         public ChatMessageEntity(string text, DateTimeOffset dateTimeOffset,Guid uniqueMessageId , string userId, string topic, int partition, long offSet, string groupId)
         {
             Text = text;

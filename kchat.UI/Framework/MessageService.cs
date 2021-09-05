@@ -20,7 +20,6 @@ namespace kchat.UI.Framework
         private readonly LokiService _lokiService;
         private bool _initialized;
         private CancellationTokenSource _ctSource;
-        private ChatMessage _result;
 
         public event EventHandler<ChatMessage> OnNewMessage;
 
@@ -83,6 +82,7 @@ namespace kchat.UI.Framework
             Task.Run(async () =>
             {
                 int retryCount=0;
+                ChatMessage result = null;
 
                 while (true)
                 {
@@ -91,7 +91,9 @@ namespace kchat.UI.Framework
                         _kafkaConsumer.Initialize(_kafkaOptions.BootstrapServers, _kafkaOptions.Username, _kafkaOptions.Password, _kafkaOptions.Topic, _kafkaOptions.GroupId);
                         _loggingService.AddLog("Kafka consumer initialized.");
 
-                        await Consume();
+                        result = _kafkaConsumer.Consume(_ctSource.Token);
+                        await HandleMessage(result);
+
                     }
                     catch (Exception exp)
                     {
@@ -101,9 +103,9 @@ namespace kchat.UI.Framework
 
                         if (retryCount >= 2)
                         {
-                            if (_result != null)
+                            if (result != null)
                             {
-                                _kafkaConsumer.Commit(_result.Topic, _result.Partiton, _result.Offset);
+                                _kafkaConsumer.Commit(result.Topic, result.Partiton, result.Offset);
                                 _loggingService.AddLog($"Reached retry count {retryCount} committing message in Kafka.");
                                 retryCount = 0;
                             }
@@ -115,37 +117,53 @@ namespace kchat.UI.Framework
             });
         }
 
-        private async Task Consume()
-        {
-            _result = _kafkaConsumer.Consume(_ctSource.Token);
-
-            if (_result != null)
+        private async Task HandleMessage(ChatMessage result)
+        { 
+            if (result == null)
             {
-                _loggingService.AddLog($"New Kafka Message '{_result.Text}' [{_result.Topic}]{{{_result.Partiton}:{_result.Offset}}}");
-
-                _lokiService.GenerateMessageException(
-                    _result.Text,
-                    "exception 1",
-                    "After message has been read but before it has been commited in kafka or database.");
-
-                await _chatMessageRepository.Add(ToChatMessageEntity(_result));
-                _loggingService.AddLog($"Message added in db");
-
-                _lokiService.GenerateMessageException(
-                    _result.Text, 
-                    "exception 2", 
-                    "After message has been added in db but before it has been commited in kafka.");
-
-                _kafkaConsumer.Commit(_result.Topic, _result.Partiton, _result.Offset);
-                _loggingService.AddLog($"Message commited in Kafka");
-
-                _lokiService.GenerateMessageException(
-                    _result.Text, 
-                    "exception 3", 
-                    "After message has been been commited in kafka and database but before displayed to user.");
-
-                OnNewMessage?.Invoke(this, _result);
+                _loggingService.AddLog($"Received null message");
+                return; 
             }
+
+            _loggingService.AddLog($"New Kafka Message '{result.Text}' {result}");
+
+            _lokiService.GenerateMessageException(
+                result.Text,
+                "exception 1",
+                "After message has been read but before it has been commited in kafka or database.");
+
+            await AddMessageInDBAsync(result);
+
+            _lokiService.GenerateMessageException(
+                result.Text,
+                "exception 2",
+                "After message has been added in db but before it has been commited in kafka.");
+
+            _kafkaConsumer.Commit(result.Topic, result.Partiton, result.Offset);
+
+            _loggingService.AddLog($"Message commited in Kafka");   
+
+            _lokiService.GenerateMessageException(
+                result.Text,
+                "exception 3",
+                "After message has been been commited in kafka and database but before displayed to user.");
+
+            OnNewMessage?.Invoke(this, result);
+        }
+
+        private async Task AddMessageInDBAsync(ChatMessage result)
+        {
+            var existingMessage = await _chatMessageRepository.Get(_kafkaOptions.GroupId, result.UniqueMessageId);
+
+            if (existingMessage != null)
+            {
+                _loggingService.AddLog($"Found Chat message in database for {_kafkaOptions.GroupId} with {result.UniqueMessageId} - {result}");
+                return;
+            }
+            
+            await _chatMessageRepository.Add(ToChatMessageEntity(result));
+
+            _loggingService.AddLog($"Message added in db");
         }
 
         private ChatMessageEntity ToChatMessageEntity(ChatMessage result)
