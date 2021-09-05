@@ -28,7 +28,10 @@ services:
     ports:
       - "5001:80"
     environment: 
+      - KafkaOptions__Topic=messages
       - KafkaOptions__BootstrapServers=kafka:9092
+      - KafkaOptions__Username=
+      - KafkaOptions__Password=
       - KafkaOptions__GroupId=web1
       - ConnectionStrings__db=Server=db;Database=kchat;User Id=sa;Password=P@assW@rd;
     depends_on: 
@@ -40,7 +43,10 @@ services:
     ports:
       - "5002:80"
     environment: 
+      - KafkaOptions__Topic=messages
       - KafkaOptions__BootstrapServers=kafka:9092
+      - KafkaOptions__Username=
+      - KafkaOptions__Password=
       - KafkaOptions__GroupId=web2
       - ConnectionStrings__db=Server=db;Database=kchat;User Id=sa;Password=P@assW@rd;
     depends_on: 
