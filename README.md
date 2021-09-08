@@ -12,6 +12,8 @@ This is a tutorial to be used in hands-on-workshop. Each branch only contains pa
 [First](https://github.com/TalalTayyab/Kchat/tree/first)|Layout of the Blazor app
 [Second](https://github.com/TalalTayyab/Kchat/tree/second)|Add Kafka code
 [Third](https://github.com/TalalTayyab/Kchat/tree/third)|Add web project into docker compose to simulate multiple client instances
+[Fourth](https://github.com/TalalTayyab/Kchat/tree/four)|Add dbUp migration script and sql-server in container.
+[Fifth](https://github.com/TalalTayyab/Kchat/tree/five)|Adding messages in database
 
 ## How to install Kafka
 
