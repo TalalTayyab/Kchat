@@ -1,0 +1,29 @@
+replicaCount: 1
+
+image:
+  repository: kchatui
+  pullPolicy: IfNotPresent
+  tag: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  annotations: 
+    nginx.ingress.kubernetes.io/rewrite-target: "/"
+  hosts:
+    - host: kubernetes.docker.internal
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
+autoscaling:
+  enabled: false
+
+serviceAccount:
+    create: false
+
+env: 
+ "KafkaOptions__BootstrapServers": "kafka-cp-kafka:9092"
